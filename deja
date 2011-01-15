@@ -13,7 +13,7 @@ var home = process.env.HOME
 // if HOME not set, die
 if (home == undefined) {
   console.log('Error: HOME environmental variable not defined.')
-  process.exit()
+  process.exit(1)
 }
 
 var dejaHome = home + '/.deja'
@@ -29,7 +29,7 @@ var valid_command = false
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
   console.log(usage())
-  process.exit(0)
+  process.exit(1)
 }
 else if(argv['_'].length == 2) {
 
@@ -109,13 +109,12 @@ function pullRepo(dejaHome, repo) {
 
       pull.on('exit', function(code) {
 
-        if (code == 0) {
-          console.log('Pull complete.')
-        }
-        else {
-          console.log('Error: Could not pull.')
-          process.exit(code)
-        }
+        console.log((code == 0)
+          ? 'Pull complete.'
+          : 'Error: Could not pull.'
+        )
+
+        process.exit(code)
       })
     }
     else {
@@ -154,7 +153,7 @@ function cloneRepo(home, dejaHome, repo) {
     if (exists) {
 
       console.log('Error: Repo already exists.')
-      process.exit()
+      process.exit(1)
     }
     else {
 
