@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+var sys = require('sys'),
+  path = require('path'),
+  spawn = require('child_process').spawn,
+  argv = require('optimist')
+    .default('c', './cable')
+    .argv
+
+// need to make sure home/.deja exists
+
+var home = process.env.HOME
+
+// if HOME not set and not specified, die
+if (home == undefined) {
+
+  sys.puts('NOOOOO')
+}
+
+if (argv['_'].length < 1 || argv['_'].length > 2) {
+
+  sys.puts('Wrong number of args.')
+}
+else if(argv['_'].length == 2) {
+
+  var command = argv['_'][0]
+  var param = argv['_'][1]
+
+  if (command == 'clone') {
+
+    var basename = path.basename(param)
+
+    // add check to see if basename already exists
+    // maybe username should be added to basename
+    // or maybe basename should be MD5 of repo?
+    // ..not a big deal whatever
+
+    spawn('git', ['clone', param, home + '/.deja/' + basename])
+
+    // cycle through cloned repo making symlinks to home, promping if files exist when the symlink would otherwise go
+  }
+
+  sys.puts(argv['c'])
+  sys.puts(argv['_'])
+}
+else {
+
+
+}
