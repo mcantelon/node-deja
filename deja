@@ -22,10 +22,13 @@ try {
   fs.mkdirSync(dejaHome, 0700)
 } catch(e) {}
 
+var valid_command = false
+
 // deal with command line input
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
   console.log(usage())
+  process.exit(0)
 }
 else if(argv['_'].length == 2) {
 
@@ -33,12 +36,12 @@ else if(argv['_'].length == 2) {
   var param   = argv['_'][1]
 
   if (command == 'clone') {
-
+    valid_command = true
     cloneRepo(home, dejaHome, param)
   }
 
   if (command == 'pull') {
-
+    valid_command = true
     pullRepo(dejaHome, param)
   }
 }
@@ -47,9 +50,13 @@ else {
   var command = argv['_'][0]
 
   if (command == 'ls') {
-
+    valid_command = true
     ls(dejaHome)
   }
+}
+
+if (!valid_command) {
+  console.log('Unrecognized command.')
 }
 
 function usage() {
