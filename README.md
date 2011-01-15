@@ -21,4 +21,4 @@ To remove this repo you'd enter:
 
 So see what repos you've cloned, enter:
 
-   deja ls
+    deja ls
