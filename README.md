@@ -11,6 +11,10 @@ using something like:
 
     deja clone git@github.com:mcantelon/dotfiles.git
 
+To update this repo you'd enter:
+
+    deja pull dotfiles.git
+
 So see what repos you've cloned, enter:
 
    deja ls
