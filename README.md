@@ -15,8 +15,10 @@ To update this repo you'd enter:
 
     deja pull dotfiles.git
 
+To remove this repo you'd enter:
+
+    deja rm dotfiles.git
+
 So see what repos you've cloned, enter:
 
    deja ls
-
-More commands coming soon.

@@ -2,6 +2,7 @@
 var path = require('path'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
+  wrench = require('wrench'),
   argv = require('optimist')
     .default('c', './cable')
     .argv
@@ -10,7 +11,6 @@ var home = process.env.HOME
 
 // if HOME not set, die
 if (home == undefined) {
-
   console.log('Error: HOME environmental variable not defined.')
   process.exit()
 }
@@ -43,6 +43,11 @@ else if(argv['_'].length == 2) {
   if (command == 'pull') {
     valid_command = true
     pullRepo(dejaHome, param)
+  }
+
+  if (command == 'rm') {
+    valid_command = true
+    rmRepo(dejaHome, param)
   }
 }
 else {
@@ -101,6 +106,24 @@ function pullRepo(dejaHome, repo) {
           process.exit(code)
         }
       })
+    }
+    else {
+
+      console.log('Error: Not a valid repo.')
+    }
+  })
+}
+
+function rmRepo(dejaHome, repo) {
+
+  var destination = dejaHome + '/' + repo
+
+  path.exists(destination, function(exists) {
+
+    if (exists) {
+
+      wrench.rmdirSyncRecursive(destination)
+      console.log('Repo removed.')
     }
     else {
 
