@@ -17,19 +17,20 @@ if (home == undefined) {
 
 var dejaHome = home + '/.deja'
 
-// make sure ~/.deja exists
+// make sure .deja exists in home directory
 try {
   fs.mkdirSync(dejaHome, 0700)
 } catch(e) {}
 
+// deal with command line input
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
-  console.log('Wrong number of args.')
+  console.log(usage())
 }
 else if(argv['_'].length == 2) {
 
   var command = argv['_'][0]
-  var param = argv['_'][1]
+  var param   = argv['_'][1]
 
   if (command == 'clone') {
 
@@ -38,7 +39,33 @@ else if(argv['_'].length == 2) {
 }
 else {
 
+  var command = argv['_'][0]
 
+  if (command == 'ls') {
+
+    console.log(ls(dejaHome))
+  }
+}
+
+function usage() {
+
+  return "Usage: \n\
+deja clone <GIT REPO>\n\
+deja ls\n\
+deja pull <REPO>\n\
+deja rm <REPO>"
+}
+
+function ls(dejaHome) {
+
+  children = fs.readdirSync(dejaHome)
+
+  for(var index in children) {
+
+    // need to check legitimacy of archive
+    var entry = children[index]
+    console.log(entry)
+  }
 }
 
 function cloneRepo(home, dejaHome, repo) {
