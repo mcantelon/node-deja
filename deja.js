@@ -24,13 +24,10 @@ try {
   fs.mkdirSync(dejaHome, 0700)
 } catch(e) {}
 
-var valid_command = false
-
 // deal with command line input
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
-  console.log(deja.usage())
-  process.exit(1)
+  invalid_command() 
 }
 else if(argv['_'].length == 2) {
 
@@ -40,36 +37,47 @@ else if(argv['_'].length == 2) {
   switch(command) {
 
     case 'clone':
-      valid_command = true
       deja.cloneRepo(home, dejaHome, param)
       break
 
     case 'pull':
-      valid_command = true
       deja.pullRepo(dejaHome, param)
       break
 
     case 'diff':
-      valid_command = true
       deja.diffRepo(home, dejaHome, param)
       break
 
     case 'rm':
-      valid_command = true
       deja.rmRepo(dejaHome, param)
       break
+
+    default:
+      invalid_command()
   }
 }
 else {
 
   var command = argv['_'][0]
 
-  if (command == 'ls') {
-    valid_command = true
-    deja.ls(dejaHome)
+  switch(command) {
+
+    case 'ls':
+      deja.ls(dejaHome)
+      break
+
+    case 'help':
+      console.log(deja.usage())
+      break
+
+    default:
+      invalid_command()
   }
 }
 
-if (!valid_command) {
+function invalid_command() {
   console.log('Unrecognized command.')
+
+  console.log(deja.usage())
+  process.exit(1)
 }
