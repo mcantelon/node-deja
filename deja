@@ -7,19 +7,25 @@ var sys = require('sys'),
     .default('c', './cable')
     .argv
 
-// need to make sure home/.deja exists
-
 var home = process.env.HOME
 
-// if HOME not set and not specified, die
+// if HOME not set, die
 if (home == undefined) {
 
-  sys.puts('NOOOOO')
+  console.log('Error: HOME environmental variable not defined.')
+  process.exit()
 }
+
+var dejaHome = home + '/.deja'
+
+// make sure ~/.deja exists
+try {
+  fs.mkdirSync(dejaHome, 0700)
+} catch(e) {}
 
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
-  sys.puts('Wrong number of args.')
+  console.log('Wrong number of args.')
 }
 else if(argv['_'].length == 2) {
 
@@ -28,16 +34,28 @@ else if(argv['_'].length == 2) {
 
   if (command == 'clone') {
 
-    var basename = path.basename(param)
+    cloneRepo(home, dejaHome, param)
+  }
+}
+else {
 
-    // add check to see if basename already exists
-    // maybe username should be added to basename
-    // or maybe basename should be MD5 of repo?
-    // ..not a big deal whatever
 
-    var destination = home + '/.deja/' + basename
+}
 
-    spawn('git', ['clone', param, destination])
+function cloneRepo(home, dejaHome, repo) {
+
+  var basename = path.basename(repo)
+
+  // add check to see if basename already exists
+  // maybe username should be added to basename
+  // or maybe basename should be MD5 of repo?
+  // ..not a big deal whatever
+
+  var destination = dejaHome + '/' + basename
+
+  var clone = spawn('git', ['clone', repo, destination])
+
+  clone.on('exit', function(code) {
 
     // cycle through cloned repo making symlinks to home, promping if files exist when the symlink would otherwise go
     children = fs.readdirSync(destination)
@@ -47,29 +65,28 @@ else if(argv['_'].length == 2) {
       var file = children[index]
       if (file != '.git') {
 
-        var symlink = destination + '/' + file
+        var symlinkPath = destination + '/' + file
+        var filepath = home + '/' + file
 
-        path.exists(symlink, function(exists) {
-
-          if (!exists) {
-
-sys.puts('LINKING')
-            // do the link to the home directory
-            spawn('ln', ['-s', symlink, file])
-          }
-          else {
-
-            sys.puts('Already exists!')
-          }
-        })
+        createSymlink(symlinkPath, filepath)
       }
     }
-  }
-
-  sys.puts(argv['c'])
-  sys.puts(argv['_'])
+  })
 }
-else {
 
+function createSymlink(symlinkPath, filepath) {
 
+  path.exists(filepath, function(exists) {
+
+    if (!exists) {
+
+      sys.puts(symlinkPath + ' -> ' + filepath)
+
+      spawn('ln', ['-s', symlinkPath, filepath])
+    }
+    else {
+
+      sys.puts('Skipped ' + filepath + ': already exists.')
+    }
+  })
 }
