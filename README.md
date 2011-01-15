@@ -19,6 +19,16 @@ To remove this repo you'd enter:
 
     deja rm dotfiles.git
 
-So see what repos you've cloned, enter:
+To see what repos you've cloned, enter:
 
     deja ls
+
+To see what the difference is between a repo and what exists in your home directory:
+
+    deja diff dotfiles.git
+
+Inspired by Homesick: https://github.com/technicalpickles/homesick
+
+** To-do
+
+Removed symlinks when removing a repo.
