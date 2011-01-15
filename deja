@@ -1,6 +1,5 @@
 #!/usr/bin/env node
-var sys = require('sys'),
-  path = require('path'),
+var path = require('path'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
   argv = require('optimist')
@@ -46,30 +45,41 @@ function cloneRepo(home, dejaHome, repo) {
 
   var basename = path.basename(repo)
 
+  var destination = dejaHome + '/' + basename
+
+  path.exists(destination, function(exists) {
+
   // add check to see if basename already exists
   // maybe username should be added to basename
   // or maybe basename should be MD5 of repo?
   // ..not a big deal whatever
 
-  var destination = dejaHome + '/' + basename
+    if (exists) {
 
-  var clone = spawn('git', ['clone', repo, destination])
+      console.log('Error: Repo already exists.')
+      process.exit()
+    }
+    else {
 
-  clone.on('exit', function(code) {
+      var clone = spawn('git', ['clone', repo, destination])
 
-    // cycle through cloned repo making symlinks to home, promping if files exist when the symlink would otherwise go
-    children = fs.readdirSync(destination)
+      clone.on('exit', function(code) {
 
-    for(var index in children) {
+        // cycle through cloned repo making symlinks to home, promping if files exist when the symlink would otherwise go
+        children = fs.readdirSync(destination)
 
-      var file = children[index]
-      if (file != '.git') {
+        for(var index in children) {
 
-        var symlinkPath = destination + '/' + file
-        var filepath = home + '/' + file
+          var file = children[index]
+          if (file != '.git') {
 
-        createSymlink(symlinkPath, filepath)
-      }
+            var symlinkPath = destination + '/' + file
+            var filepath = home + '/' + file
+
+            createSymlink(symlinkPath, filepath)
+          }
+        }
+      })
     }
   })
 }
@@ -80,13 +90,13 @@ function createSymlink(symlinkPath, filepath) {
 
     if (!exists) {
 
-      sys.puts(symlinkPath + ' -> ' + filepath)
+      console.log(symlinkPath + ' -> ' + filepath)
 
       spawn('ln', ['-s', symlinkPath, filepath])
     }
     else {
 
-      sys.puts('Skipped ' + filepath + ': already exists.')
+      console.log('Skipped ' + filepath + ': already exists.')
     }
   })
 }
