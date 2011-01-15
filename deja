@@ -4,6 +4,7 @@ var sys = require('sys'),
   fs = require('fs'),
   spawn = require('child_process').spawn,
   wrench = require('wrench'),
+  deja = require('./lib/deja')
   argv = require('optimist')
     .default('c', './cable')
     .argv
@@ -28,7 +29,7 @@ var valid_command = false
 // deal with command line input
 if (argv['_'].length < 1 || argv['_'].length > 2) {
 
-  console.log(usage())
+  console.log(deja.usage())
   process.exit(1)
 }
 else if(argv['_'].length == 2) {
@@ -40,22 +41,22 @@ else if(argv['_'].length == 2) {
 
     case 'clone':
       valid_command = true
-      cloneRepo(home, dejaHome, param)
+      deja.cloneRepo(home, dejaHome, param)
       break
 
     case 'pull':
       valid_command = true
-      pullRepo(dejaHome, param)
+      deja.pullRepo(dejaHome, param)
       break
 
     case 'diff':
       valid_command = true
-      diffRepo(dejaHome, param)
+      deja.diffRepo(home, dejaHome, param)
       break
 
     case 'rm':
       valid_command = true
-      rmRepo(dejaHome, param)
+      deja.rmRepo(dejaHome, param)
       break
   }
 }
@@ -65,178 +66,10 @@ else {
 
   if (command == 'ls') {
     valid_command = true
-    ls(dejaHome)
+    deja.ls(dejaHome)
   }
 }
 
 if (!valid_command) {
   console.log('Unrecognized command.')
-}
-
-function usage() {
-
-  return "deja == a simple tool for managing git versioning of dotfiles/scripts.\n\
-\n\
-Usage: \n\
-deja clone <GIT REPO>\n\
-deja ls\n\
-deja pull <REPO>\n\
-deja rm <REPO>"
-}
-
-function ls(dejaHome) {
-
-  children = fs.readdirSync(dejaHome)
-
-  for(var index in children) {
-
-    // need to check legitimacy of archive
-    var entry = children[index]
-    console.log(entry)
-  }
-}
-
-function pullRepo(dejaHome, repo) {
-
-  var destination = dejaHome + '/' + repo
-
-  path.exists(destination, function(exists) {
-
-    if (exists) {
-      process.chdir(destination)
-
-      var pull = spawn('git', ['pull'])
-
-      pull.on('exit', function(code) {
-
-        console.log((code == 0)
-          ? 'Pull complete.'
-          : 'Error: Could not pull.'
-        )
-
-        process.exit(code)
-      })
-    }
-    else {
-
-      console.log('Error: Not a valid repo.')
-    }
-  })
-}
-
-function rmRepo(dejaHome, repo) {
-
-  var destination = dejaHome + '/' + repo
-
-  path.exists(destination, function(exists) {
-
-    if (exists) {
-
-      wrench.rmdirSyncRecursive(destination)
-      console.log('Repo removed.')
-    }
-    else {
-
-      console.log('Error: Not a valid repo.')
-    }
-  })
-}
-
-function cloneRepo(home, dejaHome, repo) {
-
-  var basename = path.basename(repo)
-
-  var destination = dejaHome + '/' + basename
-
-  path.exists(destination, function(exists) {
-
-    if (exists) {
-
-      console.log('Error: Repo already exists.')
-      process.exit(1)
-    }
-    else {
-
-      var clone = spawn('git', ['clone', repo, destination])
-
-      clone.on('exit', function(code) {
-
-        // TODO: add error handling if exit code is bad
-        // cycle through cloned repo making symlinks to home
-        children = fs.readdirSync(destination)
-
-        for(var index in children) {
-
-          var file = children[index]
-          if (file != '.git') {
-
-            var symlinkPath = destination + '/' + file
-            var filepath = home + '/' + file
-
-            createSymlink(symlinkPath, filepath)
-          }
-        }
-      })
-    }
-  })
-}
-
-function diffRepo(dejaHome, param) {
-
-  var destination = dejaHome + '/' + param
-
-  path.exists(destination, function(exists) {
-
-    if (exists) {
-
-      children = fs.readdirSync(destination)
-
-      for(var index in children) {
-
-        var file = children[index]
-
-        if (file != '.git') {
-          diffIfNotSymbolicLink(home, destination, file)
-        }
-      }
-    }
-    else {
-
-      console.log('Error: Not a valid repo.')
-    }
-  })
-}
-
-function diffIfNotSymbolicLink(home, repoHome, file) {
-
-  var homeFilePath = home + '/' + file
-  var repoFilePath = repoHome + '/' + file
-
-  fs.lstat(homeFilePath, function(err, stats) {
-    if (!stats.isSymbolicLink()) {
-
-      var diff = spawn('diff', [homeFilePath, repoFilePath])
-
-      diff.stdout.on('data', function (data) {
-        sys.puts('diff ' + homeFilePath + ' ' + repoFilePath)
-        sys.print(data + "\n")
-      })
-    }
-  })
-}
-
-function createSymlink(symlinkPath, filepath) {
-
-  path.exists(filepath, function(exists) {
-
-    if (!exists) {
-
-      console.log(symlinkPath + ' -> ' + filepath)
-      spawn('ln', ['-s', symlinkPath, filepath])
-    }
-    else {
-
-      console.log('Skipped ' + filepath + ': already exists.')
-    }
-  })
 }
