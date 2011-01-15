@@ -35,19 +35,27 @@ else if(argv['_'].length == 2) {
   var command = argv['_'][0]
   var param   = argv['_'][1]
 
-  if (command == 'clone') {
-    valid_command = true
-    cloneRepo(home, dejaHome, param)
-  }
+  switch(command) {
 
-  if (command == 'pull') {
-    valid_command = true
-    pullRepo(dejaHome, param)
-  }
+    case 'clone':
+      valid_command = true
+      cloneRepo(home, dejaHome, param)
+      break
 
-  if (command == 'rm') {
-    valid_command = true
-    rmRepo(dejaHome, param)
+    case 'pull':
+      valid_command = true
+      pullRepo(dejaHome, param)
+      break
+
+    case 'diff':
+      valid_command = true
+      diffRepo(dejaHome, param)
+      break
+
+    case 'rm':
+      valid_command = true
+      rmRepo(dejaHome, param)
+      break
   }
 }
 else {
@@ -66,7 +74,9 @@ if (!valid_command) {
 
 function usage() {
 
-  return "Usage: \n\
+  return "deja == a simple tool for managing git versioning of dotfiles/scripts.\n\
+\n\
+Usage: \n\
 deja clone <GIT REPO>\n\
 deja ls\n\
 deja pull <REPO>\n\
@@ -172,6 +182,47 @@ function cloneRepo(home, dejaHome, repo) {
           }
         }
       })
+    }
+  })
+}
+
+function diffRepo(dejaHome, param) {
+
+  var destination = dejaHome + '/' + param
+
+  path.exists(destination, function(exists) {
+
+    if (exists) {
+
+      children = fs.readdirSync(destination)
+
+      for(var index in children) {
+
+        var file = children[index]
+
+        if (file != '.git') {
+console.log('fff:' + file)
+          diffIfNotSymbolicLink(home, dejaHome, file)
+        }
+      }
+    }
+    else {
+
+      console.log('Error: Not a valid repo.')
+    }
+  })
+}
+
+function diffIfNotSymbolicLink(home, dejaHome, file) {
+
+console.log(file)
+  homeFilePath = home + '/' + file
+  repoFilePath = dejaHome + '/' + file
+console.log(homeFilePath)
+
+  fs.lstat(homeFilePath, function(err, stats) {
+    if (!stats.isSymbolicLink()) {
+      console.log('diff ' + homeFilePath + ' ' + repoFilePath)
     }
   })
 }
