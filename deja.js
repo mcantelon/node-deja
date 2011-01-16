@@ -43,7 +43,7 @@ else if(argv['_'].length == 2) {
       break
 
     case 'rm':
-      deja.rmRepo(dejaHome, param)
+      deja.rmRepo(home, dejaHome, param)
       break
 
     default:
