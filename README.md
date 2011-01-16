@@ -29,3 +29,7 @@ To see all repos you've cloned enter:
     deja ls
 
 Inspired by Homesick: https://github.com/technicalpickles/homesick
+
+## Installation
+
+    npm install deja
