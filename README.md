@@ -9,6 +9,8 @@ using a deja command like:
 
     deja clone git@github.com:mcantelon/dotfiles.git
 
+The repo would then be stored at ~/.deja/dotfiles.git
+
 To update this repo you'd enter:
 
     deja pull dotfiles.git
@@ -17,13 +19,13 @@ To remove this repo you'd enter:
 
     deja rm dotfiles.git
 
-To see all repos you've cloned, enter:
-
-    deja ls
-
-To see what the difference is between a repo and what currently exists in your
-home directory:
+To see the differences between this repo and what currently exists in your
+home directory you'd enter:
 
     deja diff dotfiles.git
+
+To see all repos you've cloned enter:
+
+    deja ls
 
 Inspired by Homesick: https://github.com/technicalpickles/homesick
