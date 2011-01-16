@@ -27,7 +27,3 @@ home directory:
     deja diff dotfiles.git
 
 Inspired by Homesick: https://github.com/technicalpickles/homesick
-
-## To-do
-
-* Remove symlinks when removing a repo.
