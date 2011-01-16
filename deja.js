@@ -1,13 +1,7 @@
 #!/usr/bin/env node
-var sys = require('sys'),
-  path = require('path'),
-  fs = require('fs'),
-  spawn = require('child_process').spawn,
-  wrench = require('wrench'),
+var fs = require('fs'),
   deja = require('./lib/deja')
-  argv = require('optimist')
-    .default('c', './cable')
-    .argv
+  argv = require('optimist').argv
 
 var home = process.env.HOME
 
