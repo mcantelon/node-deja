@@ -30,20 +30,29 @@ else if(argv['_'].length == 2) {
 
   switch(command) {
 
+    // clone a repo and create symlinks
     case 'clone':
       deja.cloneRepo(home, dejaHome, param)
       break
 
+    // update repo
     case 'pull':
       deja.pullRepo(dejaHome, param)
       break
 
+    // show differences between repo and home dir
     case 'diff':
       deja.diffRepo(home, dejaHome, param)
       break
 
+    // delete repo
     case 'rm':
       deja.rmRepo(home, dejaHome, param)
+      break
+
+    // list repo contents
+    case 'ls':
+      deja.ls(dejaHome + '/' + param)
       break
 
     default:
@@ -56,10 +65,12 @@ else {
 
   switch(command) {
 
+    // list repos
     case 'ls':
       deja.ls(dejaHome)
       break
 
+    // output help
     case 'help':
       console.log(deja.usage())
       break
