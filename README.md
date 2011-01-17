@@ -9,22 +9,23 @@ using a deja command like:
 
     deja clone git@github.com:mcantelon/dotfiles.git
 
-The repo would then be stored at "~/.deja/dotfiles.git". Git repo URLs default to Github, so you could also clone using the following:
+The repo would then be stored at "~/.deja/dotfiles". Git repo URLs default to
+Github, so you could also clone using the following:
 
     deja clone mcantelon/dotfiles
 
 To update this repo you'd enter:
 
-    deja pull dotfiles.git
+    deja pull dotfiles
 
-To remove this repo you'd enter:
+To remove this repo (and any home directory symlinks) you'd enter:
 
-    deja rm dotfiles.git
+    deja rm dotfiles
 
 To see the differences between this repo and what currently exists in your
 home directory you'd enter:
 
-    deja diff dotfiles.git
+    deja diff dotfiles
 
 To see all repos you've cloned enter:
 
