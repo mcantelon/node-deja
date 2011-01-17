@@ -50,6 +50,11 @@ else if(argv['_'].length == 2) {
       deja.rmRepo(home, dejaHome, param)
       break
 
+    // add home dir symlinks to repo
+    case 'link':
+      deja.rmLink(home, dejaHome, param)
+      break
+
     // list repo contents
     case 'ls':
       deja.ls(dejaHome + '/' + param)
