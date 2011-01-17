@@ -31,6 +31,14 @@ To see all repos you've cloned enter:
 
     deja ls
 
+To remove links to your repo, for whatever reason, you'd enter:
+
+    deja unlink dotfiles
+
+To restart links to your repo after removing them, you'd enter:
+
+    deja link dotfiles
+
 Inspired by Homesick: https://github.com/technicalpickles/homesick
 
 ## Installation
