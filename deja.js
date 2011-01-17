@@ -52,7 +52,12 @@ else if(argv['_'].length == 2) {
 
     // add home dir symlinks to repo
     case 'link':
-      deja.rmLink(home, dejaHome, param)
+      deja.linkRepo(home, dejaHome, param)
+      break
+
+    // remove home dir symlinks to repo
+    case 'unlink':
+      deja.unlinkRepo(home, dejaHome, param)
       break
 
     // list repo contents
