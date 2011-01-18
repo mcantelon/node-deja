@@ -78,11 +78,8 @@ If you did this and changed your mind you could remove the symlinks by entering:
 
 ## Dependencies
 
-deja requires the following node.js modules (both available via npm as "wrench"
-and "optimist" respectively):
+deja requires the [wrench.js](https://github.com/ryanmcgrath/wrench-js) and
+[optimist](https://github.com/substack/node-optimist) node.js modules (both
+are available via npm as "wrench" and "optimist" respectively).
 
-* wrench.js: https://github.com/ryanmcgrath/wrench-js
-* optimist: https://github.com/substack/node-optimist
-
-deja requires git to be installed. If you want to use the diff command, diff
-should be installed as well.
+deja, of course, requires [git](http://git-scm.com/) to be installed.
