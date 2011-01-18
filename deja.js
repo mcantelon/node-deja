@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/*!
+* deja
+* Copyright(c) 2011 Mike Cantelon
+* MIT Licensed
+*/
+
 var fs = require('fs'),
   deja = require('./lib/deja')
   argv = require('optimist').argv
