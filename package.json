@@ -1,6 +1,6 @@
 {
     "name": "deja",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "CLI utility for managing git versioning of dotfiles and such.",
     "tags" : ["cli", "git", "dotfiles"],
     "author" : "Mike Cantelon <mcantelon@gmail.com>",
@@ -21,7 +21,7 @@
       "node": ">= 0.3.0"
     },
     "bugs" : {
-        "web" : "http://github.com/mcantelon/node-deja/issues",
+        "web" : "http://github.com/mcantelon/node-deja/issues"
     },
     "bin" : {
       "deja" : "./deja.js"
