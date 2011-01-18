@@ -85,6 +85,11 @@ else {
       console.log(deja.usage())
       break
 
+    // output version
+    case 'version':
+      console.log(deja.version())
+      break
+
     default:
       invalid_command()
   }
