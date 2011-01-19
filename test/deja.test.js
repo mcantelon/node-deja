@@ -47,6 +47,18 @@ function spawnInTestHome(command, args, testingDir) {
   return spawn(command, args, {env: process.env})
 }
 
+function testClone(testingDir, repoBaseName, repoUrl) {
+
+  var dejaArgs = ['clone', repoUrl]
+  var deja = spawnInTestHome('deja', dejaArgs, testingDir)
+  deja.on('exit', function(code) {
+    path.exists(testingDir + '/.deja/' + repoBaseName + '/.git', function(exists) {
+      testing_teardown(testingDir)
+      exists.should.equal(true)
+    })
+  })
+}
+
 module.exports = {
   'test .deja dir  creation': function() {
     var testingDir = TESTING_DIR + '_a'
@@ -63,13 +75,12 @@ module.exports = {
   'test git clone': function() {
     var testingDir = TESTING_DIR + '_b'
     testing_setup(testingDir)
-    var dejaArgs = ['clone', 'git://github.com/mcantelon/dotfiles.git']
-    var deja = spawnInTestHome('deja', dejaArgs, testingDir)
-    deja.on('exit', function(code) {
-      path.exists(testingDir + '/.deja/dotfiles', function(exists) {
-        testing_teardown(testingDir)
-        exists.should.equal(true)
-      })
-    })
+    testClone(testingDir, 'dotfiles', 'git://github.com/mcantelon/dotfiles.git')
+  },
+
+  'test git clone with shortform': function() {
+    var testingDir = TESTING_DIR + '_c'
+    testing_setup(testingDir)
+    testClone(testingDir, 'dotfiles', 'mcantelon/dotfiles')
   }
 }
