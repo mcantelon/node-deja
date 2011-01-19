@@ -74,6 +74,8 @@ If you did this and changed your mind you could remove the symlinks by entering:
 
 ## Installation
 
+The easiest way is via [npm](https://github.com/isaacs/npm):
+
     npm install deja
 
 ## Dependencies
@@ -83,3 +85,13 @@ deja requires the [wrench.js](https://github.com/ryanmcgrath/wrench-js) and
 are available via npm as "wrench" and "optimist" respectively).
 
 deja, of course, requires [git](http://git-scm.com/) to be installed.
+
+## Testing
+
+Testing requires the [expresso](ihttps://github.com/visionmedia/expresso)
+module (available via rpm as "expresso").
+
+Run the tests by entering:
+
+    expresso
+
