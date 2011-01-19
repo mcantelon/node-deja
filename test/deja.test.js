@@ -2,8 +2,7 @@ var assert = require('assert'),
     should = require('should'),
     spawn = require('child_process').spawn,
     fs = require('fs'),
-    path = require('path'),
-    wrench = require('wrench')
+    path = require('path')
 
 TESTING_DIR = '/tmp/dejaTest'
 
@@ -14,7 +13,7 @@ function testing_setup(testingDir) {
 
     // if the testing directory is already here, remove it
     if (exists) {
-      wrench.rmdirSyncRecursive(testingDir)
+      spawn('rm', ['-r', '-f', testingDir])
     }
 
     // make testing directory
@@ -37,19 +36,38 @@ function testing_teardown(testingDir) {
 
     // if the testing directory is already here, remove it
     if (exists) {
-      wrench.rmdirSyncRecursive(testingDir)
+      spawn('rm', ['-r', '-f', testingDir])
     }
   })
 }
 
+function spawnInTestHome(command, args, testingDir) {
+
+  process.env.HOME = testingDir
+  return spawn(command, args, {env: process.env})
+}
+
 module.exports = {
   'test .deja dir  creation': function() {
-    testing_setup(TESTING_DIR)
-    process.env.HOME = TESTING_DIR
-    var deja = spawn('deja', [], {env: process.env})
+    var testingDir = TESTING_DIR + '_a'
+    testing_setup(testingDir)
+    var deja = spawnInTestHome('deja', [], testingDir)
     deja.on('exit', function(code) {
-      path.exists(TESTING_DIR + '/.deja', function(exists) {
-        testing_teardown(TESTING_DIR)
+      path.exists(testingDir + '/.deja', function(exists) {
+        testing_teardown(testingDir)
+        exists.should.equal(true)
+      })
+    })
+  },
+
+  'test git clone': function() {
+    var testingDir = TESTING_DIR + '_b'
+    testing_setup(testingDir)
+    var dejaArgs = ['clone', 'git://github.com/mcantelon/dotfiles.git']
+    var deja = spawnInTestHome('deja', dejaArgs, testingDir)
+    deja.on('exit', function(code) {
+      path.exists(testingDir + '/.deja/dotfiles', function(exists) {
+        testing_teardown(testingDir)
         exists.should.equal(true)
       })
     })
