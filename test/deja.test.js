@@ -68,11 +68,11 @@ function doClone(testingDir, repoBaseName, repoUrl, exists_callback) {
   })
 }
 
-function testClone(testingDir, repoBaseName, repoUrl) {
+function testCloneThenTeardown(testingDir, repoBaseName, repoUrl) {
 
   doClone(testingDir, repoBaseName, repoUrl, function(exists) {
-    testing_teardown(testingDir)
     exists.should.equal(true)
+    testing_teardown(testingDir)
   })
 }
 
@@ -82,15 +82,12 @@ module.exports = {
     testing_setup(testingDir)
     var deja = spawnInTestHome('deja', ['help'], testingDir)
     deja.on('exit', function(code) {
+      code.should.equal(0)
       if (code == 0) {
         path.exists(testingDir + '/.deja', function(exists) {
           testing_teardown(testingDir)
           exists.should.equal(true)
         })
-      }
-      else {
-        console.log('Error: error return while running "deja help".')
-        process.exit(1)
       }
     })
   },
@@ -98,33 +95,29 @@ module.exports = {
   'test deja clone': function() {
     var testingDir = TESTING_DIR + '_b'
     testing_setup(testingDir)
-    testClone(testingDir, 'dotfiles', 'git://github.com/mcantelon/dotfiles.git')
+    testCloneThenTeardown(testingDir, 'dotfiles', 'git://github.com/mcantelon/dotfiles.git')
   },
 
   'test deja clone with shortform': function() {
     var testingDir = TESTING_DIR + '_c'
     testing_setup(testingDir)
-    testClone(testingDir, 'dotfiles', 'mcantelon/dotfiles')
+    testCloneThenTeardown(testingDir, 'dotfiles', 'mcantelon/dotfiles')
   },
 
   'test deja rm': function() {
     var testingDir = TESTING_DIR + '_d'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      exists.should.equal(true)
       if (exists) {
         var deja = spawnInTestHome('deja', ['rm', 'dotfiles'], testingDir)
         deja.on('exit', function(code) {
           path.exists(testingDir + '/.deja/dotfiles', function(exists) {
-            testing_teardown(testingDir)
             // the repo should have been deleted by "deja rm dotfiles"
             exists.should.equal(false)
+            testing_teardown(testingDir)
           })
         })
-      }
-      else {
-
-        console.log('Error: clone failed.')
-        exit(1)
       }
     })
   },
@@ -133,17 +126,13 @@ module.exports = {
     var testingDir = TESTING_DIR + '_e'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      exists.should.equal(true)
       if (exists) {
         var deja = spawnInTestHome('deja', ['ls'], testingDir)
         deja.stdout.on('data', function(data) {
-          testing_teardown(testingDir)
           data.toString().should.equal("dotfiles\n")
+          testing_teardown(testingDir)
         })
-      }
-      else {
-
-        console.log('Error: clone failed.')
-        exit(1)
       }
     })
   },
@@ -152,21 +141,16 @@ module.exports = {
     var testingDir = TESTING_DIR + '_f'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      exists.should.equal(true)
       if (exists) {
         var deja = spawnInTestHome('deja', ['link', 'dotfiles'], testingDir)
         deja.on('exit', function(code) {
           code.should.equal(0)
-
           fs.lstat(testingDir + '/.vimrc', function(err, stats) {
             stats.isSymbolicLink().should.equal(true)
             testing_teardown(testingDir)
           })
         })
-      }
-      else {
-
-        console.log('Error: clone failed.')
-        exit(1)
       }
     })
   },
@@ -175,11 +159,11 @@ module.exports = {
     var testingDir = TESTING_DIR + '_g'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      exists.should.equal(true)
       if (exists) {
         var deja = spawnInTestHome('deja', ['link', 'dotfiles'], testingDir)
         deja.on('exit', function(code) {
           code.should.equal(0)
-
           fs.lstat(testingDir + '/.vimrc', function(err, stats) {
             stats.isSymbolicLink().should.equal(true)
 
@@ -194,11 +178,6 @@ module.exports = {
             })
           })
         })
-      }
-      else {
-
-        console.log('Error: clone failed.')
-        exit(1)
       }
     })
   }
