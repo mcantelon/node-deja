@@ -77,7 +77,7 @@ function testClone(testingDir, repoBaseName, repoUrl) {
 }
 
 module.exports = {
-  'test .deja dir  creation': function() {
+  'test .deja dir creation': function() {
     var testingDir = TESTING_DIR + '_a'
     testing_setup(testingDir)
     var deja = spawnInTestHome('deja', ['help'], testingDir)
@@ -95,19 +95,19 @@ module.exports = {
     })
   },
 
-  'test git clone': function() {
+  'test deja clone': function() {
     var testingDir = TESTING_DIR + '_b'
     testing_setup(testingDir)
     testClone(testingDir, 'dotfiles', 'git://github.com/mcantelon/dotfiles.git')
   },
 
-  'test git clone with shortform': function() {
+  'test deja clone with shortform': function() {
     var testingDir = TESTING_DIR + '_c'
     testing_setup(testingDir)
     testClone(testingDir, 'dotfiles', 'mcantelon/dotfiles')
   },
 
-  'test git rm': function() {
+  'test deja rm': function() {
     var testingDir = TESTING_DIR + '_d'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
@@ -115,6 +115,7 @@ module.exports = {
         var deja = spawnInTestHome('deja', ['rm', 'dotfiles'], testingDir)
         deja.on('exit', function(code) {
           path.exists(testingDir + '/.deja/dotfiles', function(exists) {
+            testing_teardown(testingDir)
             // the repo should have been deleted by "deja rm dotfiles"
             exists.should.equal(false)
           })
@@ -128,14 +129,38 @@ module.exports = {
     })
   },
 
-  'test git ls': function() {
+  'test deja ls': function() {
     var testingDir = TESTING_DIR + '_e'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
       if (exists) {
         var deja = spawnInTestHome('deja', ['ls'], testingDir)
         deja.stdout.on('data', function(data) {
+          testing_teardown(testingDir)
           data.toString().should.equal("dotfiles\n")
+        })
+      }
+      else {
+
+        console.log('Error: clone failed.')
+        exit(1)
+      }
+    })
+  },
+
+  'test deja link': function() {
+    var testingDir = TESTING_DIR + '_f'
+    testing_setup(testingDir)
+    doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      if (exists) {
+        var deja = spawnInTestHome('deja', ['link', 'dotfiles'], testingDir)
+        deja.on('exit', function(code) {
+          code.should.equal(0)
+
+          fs.lstat(testingDir + '/.vimrc', function(err, stats) {
+            stats.isSymbolicLink().should.equal(true)
+            //testing_teardown(testingDir)
+          })
         })
       }
       else {
