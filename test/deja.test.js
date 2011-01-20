@@ -85,8 +85,8 @@ module.exports = {
       code.should.equal(0)
       if (code == 0) {
         path.exists(testingDir + '/.deja', function(exists) {
-          testing_teardown(testingDir)
           exists.should.equal(true)
+          testing_teardown(testingDir)
         })
       }
     })
