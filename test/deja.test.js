@@ -107,7 +107,7 @@ module.exports = {
     testClone(testingDir, 'dotfiles', 'mcantelon/dotfiles')
   },
 
-  'test git ls': function() {
+  'test git rm': function() {
     var testingDir = TESTING_DIR + '_d'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
