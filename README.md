@@ -18,7 +18,8 @@ items in it, using a deja command like:
 
     deja clone git@github.com:mcantelon/dotfiles.git
 
-The repo would then be stored at `~/.deja/dotfiles`.
+The repo would then be stored at `~/.deja/dotfiles`. If your repo contains
+submodules, deja will automatically initialize and update them.
 
 Git repo URLs default to Github and the `.git` at the end of a repo URL can be
 left off, so you could also do a quick read-only clone by entering the
