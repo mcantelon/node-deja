@@ -111,13 +111,38 @@ module.exports = {
     var testingDir = TESTING_DIR + '_d'
     testing_setup(testingDir)
     doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
-      var deja = spawnInTestHome('deja', ['rm', 'dotfiles'], testingDir)
-      deja.on('exit', function(code) {
-        path.exists(testingDir + '/.deja/dotfiles', function(exists) {
-          // the repo should have been deleted by "deja rm dotfiles"
-          exists.should.equal(false)
+      if (exists) {
+        var deja = spawnInTestHome('deja', ['rm', 'dotfiles'], testingDir)
+        deja.on('exit', function(code) {
+          path.exists(testingDir + '/.deja/dotfiles', function(exists) {
+            // the repo should have been deleted by "deja rm dotfiles"
+            exists.should.equal(false)
+          })
         })
-      })
+      }
+      else {
+
+        console.log('Error: clone failed.')
+        exit(1)
+      }
+    })
+  },
+
+  'test git ls': function() {
+    var testingDir = TESTING_DIR + '_e'
+    testing_setup(testingDir)
+    doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      if (exists) {
+        var deja = spawnInTestHome('deja', ['ls'], testingDir)
+        deja.stdout.on('data', function(data) {
+          data.toString().should.equal("dotfiles\n")
+        })
+      }
+      else {
+
+        console.log('Error: clone failed.')
+        exit(1)
+      }
     })
   }
 }
