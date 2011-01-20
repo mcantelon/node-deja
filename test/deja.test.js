@@ -159,7 +159,39 @@ module.exports = {
 
           fs.lstat(testingDir + '/.vimrc', function(err, stats) {
             stats.isSymbolicLink().should.equal(true)
-            //testing_teardown(testingDir)
+            testing_teardown(testingDir)
+          })
+        })
+      }
+      else {
+
+        console.log('Error: clone failed.')
+        exit(1)
+      }
+    })
+  },
+
+  'test deja unlink': function() {
+    var testingDir = TESTING_DIR + '_g'
+    testing_setup(testingDir)
+    doClone(testingDir, 'dotfiles', 'mcantelon/dotfiles', function(exists) {
+      if (exists) {
+        var deja = spawnInTestHome('deja', ['link', 'dotfiles'], testingDir)
+        deja.on('exit', function(code) {
+          code.should.equal(0)
+
+          fs.lstat(testingDir + '/.vimrc', function(err, stats) {
+            stats.isSymbolicLink().should.equal(true)
+
+            var deja = spawnInTestHome('deja', ['unlink', 'dotfiles'], testingDir)
+            deja.on('exit', function(code) {
+              code.should.equal(0)
+
+              fs.lstat(testingDir + '/.vimrc', function(err, stats) {
+                assert.isUndefined(stats)
+                testing_teardown(testingDir)
+              })
+            })
           })
         })
       }
