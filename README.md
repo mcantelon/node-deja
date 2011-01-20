@@ -9,8 +9,8 @@ the Ruby application [homesick](https://github.com/technicalpickles/homesick).
 Putting your dotfiles and personal scripts into a Git repository offers a lot
 of advantages, but there's one obstacle: Git won't let you clone directly into
 your home directory. One can, however, clone a repo to another directory then
-use symbolic links to point from one's home directory to the cloned files. deja
-makes this easy.
+use symbolic links to point from one's home directory to the cloned files. This
+is no fun to do manually, but deja automates the process.
 
 If you have a Git repository containing your dotfiles, for example, you can
 clone this repo, automatically adding symlinks in your home directory to the
