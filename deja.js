@@ -69,7 +69,7 @@ else if(argv['_'].length == 2) {
 
     // list repo contents
     case 'ls':
-      deja.ls(dejaHome + '/' + param)
+      deja.ls(home, dejaHome, param)
       break
 
     default:
@@ -84,7 +84,7 @@ else {
 
     // list repos
     case 'ls':
-      deja.ls(dejaHome)
+      deja.ls(home, dejaHome, false)
       break
 
     // output help
