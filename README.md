@@ -39,6 +39,16 @@ To see all repos you've cloned you'd enter:
 
     deja ls
 
+To see the contents of a repo you'd enter:
+
+    deja ls dotfiles
+
+If using the `ls` command to view items in a repo, additional information
+about each entry may be shown. If an entry is a directory, "dir" will be added.
+If there isn't a home directory entry linking the repo entry, "unlinked" will be
+added. If there is a home directory entry with the same name as a repo entry,
+"conflicts" will be added.
+
 ## Other Stuff
 
 To see the differences between a repo and what currently exists in your
