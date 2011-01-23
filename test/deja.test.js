@@ -180,5 +180,25 @@ module.exports = {
         })
       }
     })
+  },
+
+  'test deja duplicate repo name handling': function() {
+    var repoUrl = 'mcantelon/dotfiles'
+    var testingDir = TESTING_DIR + '_h'
+    testing_setup(testingDir)
+    doClone(testingDir, 'dotfiles', repoUrl, function(exists) {
+      exists.should.equal(true)
+      if (exists) {
+        var dejaArgs = ['clone', repoUrl]
+        var deja = spawnInTestHome('deja', dejaArgs, testingDir)
+        deja.on('exit', function(code) {
+          // deja should have padding the repo name as it's a duplicate
+          path.exists(testingDir + '/.deja/dotfiles_1/.git', function(exists) {
+            exists.should.equal(true)
+            testing_teardown(testingDir)
+          })
+        })
+      }
+    })
   }
 }
