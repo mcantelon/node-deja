@@ -1,4 +1,14 @@
-# deja
+           _            _                _        _          
+          /\ \         /\ \             /\ \     / /\        
+         /  \ \____   /  \ \            \ \ \   / /  \       
+        / /\ \_____\ / /\ \ \           /\ \_\ / / /\ \      
+       / / /\/___  // / /\ \_\         / /\/_// / /\ \ \     
+      / / /   / / // /_/_ \/_/_       / / /  / / /  \ \ \    
+     / / /   / / // /____/\  /\ \    / / /  / / /___/ /\ \   
+    / / /   / / // /\____\/  \ \_\  / / /  / / /_____/ /\ \  
+    \ \ \__/ / // / /______  / / /_/ / /  / /_________/\ \ \ 
+     \ \___\/ // / /_______\/ / /__\/ /  / / /_       __\ \_\
+      \/_____/ \/__________/\/_______/   \_\___\     /____/_/
 
 deja is a node.js-driven CLI utility for managing the git versioning of home
 directory sundries, such as dotfiles and personal scripts. deja was inspired by
@@ -45,8 +55,8 @@ To see the contents of a repo you'd enter:
 
 If using the `ls` command to view items in a repo, additional information
 about each entry may be shown. If an entry is a directory, "dir" will be added.
-If there isn't a home directory entry linking the repo entry, "unlinked" will be
-added. If there is a home directory entry with the same name as a repo entry,
+If there isn't a home directory entry linking the repo entry, "unlinked" will
+be added. If there is a home directory entry with the same name as a repo entry,
 "conflicts" will be added.
 
 ## Other Stuff
