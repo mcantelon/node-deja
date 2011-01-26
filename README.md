@@ -64,7 +64,7 @@ To re-add links to your repo after removing them, you'd enter:
 
     deja link dotfiles
 
-## Repo Subdirectories
+## Subdirectories
 
 When deja clones, it just adds symlinks to the first level of files and
 directories contained in your repo, skipping symlink creation when a file
