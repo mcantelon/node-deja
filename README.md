@@ -74,6 +74,13 @@ To re-add links to your repo after removing them, you'd enter:
 
     deja link dotfiles
 
+## Configuration
+
+If you're ultra-lazy, you can set `github_username` in an .ini file at
+$HOME/.dejaconfig. Then you'd be able to do quick writeable clones like this:
+
+    deja clone dotfiles
+
 ## Subdirectories
 
 When deja clones, it just adds symlinks to the first level of files and
