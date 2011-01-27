@@ -6,101 +6,107 @@
 * MIT Licensed
 */
 
-var fs = require('fs'),
-  deja = require('./lib/deja')
-  argv = require('optimist').argv
+var fs = require('fs')
+  , deja = require('./lib/deja')
+  , argv = require('optimist').argv
+  , iniparser = require('iniparser')
 
 var home = process.env.HOME
 
 // if HOME not set, die
-if (home == undefined) {
+if (home === undefined) {
   console.log('Error: HOME environmental variable not defined.')
   process.exit(1)
 }
 
-var dejaHome = home + '/.deja'
+iniparser.parse(home + '/.dejaconfig', function(err, data) {
 
-// make sure .deja exists in home directory
-try {
-  fs.mkdirSync(dejaHome, 0700)
-} catch(e) {}
+  var config = (err) ? false : data
 
-// deal with command line input
-if (argv['_'].length < 1 || argv['_'].length > 2) {
+  var dejaHome = home + '/.deja'
 
-  invalid_command() 
-}
-else if(argv['_'].length == 2) {
+  // make sure .deja exists in home directory
+  try {
+    fs.mkdirSync(dejaHome, 0700)
+  } catch(e) {}
 
-  var command = argv['_'][0]
-  var param   = argv['_'][1]
+  // deal with command line input
+  if (argv['_'].length < 1 || argv['_'].length > 2) {
 
-  switch(command) {
-
-    // clone a repo and create symlinks
-    case 'clone':
-      deja.cloneRepo(home, dejaHome, param)
-      break
-
-    // update repo
-    case 'pull':
-      deja.pullRepo(dejaHome, param)
-      break
-
-    // show differences between repo and home dir
-    case 'diff':
-      deja.diffRepo(home, dejaHome, param)
-      break
-
-    // delete repo
-    case 'rm':
-      deja.rmRepo(home, dejaHome, param)
-      break
-
-    // add home dir symlinks to repo
-    case 'link':
-      deja.linkRepo(home, dejaHome, param)
-      break
-
-    // remove home dir symlinks to repo
-    case 'unlink':
-      deja.unlinkRepo(home, dejaHome, param)
-      break
-
-    // list repo contents
-    case 'ls':
-      deja.ls(home, dejaHome, param)
-      break
-
-    default:
-      invalid_command()
+    invalid_command() 
   }
-}
-else {
+  else if(argv['_'].length == 2) {
 
-  var command = argv['_'][0]
+    var command = argv['_'][0]
+    var param   = argv['_'][1]
 
-  switch(command) {
+    switch(command) {
 
-    // list repos
-    case 'ls':
-      deja.ls(home, dejaHome, false)
-      break
+      // clone a repo and create symlinks
+      case 'clone':
+        deja.cloneRepo(home, dejaHome, param, config)
+        break
 
-    // output help
-    case 'help':
-      console.log(deja.usage())
-      break
+      // update repo
+      case 'pull':
+        deja.pullRepo(dejaHome, param)
+        break
 
-    // output version
-    case 'version':
-      console.log(deja.version())
-      break
+      // show differences between repo and home dir
+      case 'diff':
+        deja.diffRepo(home, dejaHome, param)
+        break
 
-    default:
-      invalid_command()
+      // delete repo
+      case 'rm':
+        deja.rmRepo(home, dejaHome, param)
+        break
+
+      // add home dir symlinks to repo
+      case 'link':
+        deja.linkRepo(home, dejaHome, param)
+        break
+
+      // remove home dir symlinks to repo
+      case 'unlink':
+        deja.unlinkRepo(home, dejaHome, param)
+        break
+
+      // list repo contents
+      case 'ls':
+        deja.ls(home, dejaHome, param)
+        break
+
+      default:
+        invalid_command()
+    }
   }
-}
+  else {
+
+    var command = argv['_'][0]
+
+    switch(command) {
+
+      // list repos
+      case 'ls':
+        deja.ls(home, dejaHome, false)
+        break
+
+      // output help
+      case 'help':
+        console.log(deja.usage())
+        break
+
+      // output version
+      case 'version':
+        console.log(deja.version())
+        break
+
+      default:
+        invalid_command()
+    }
+  }
+})
 
 function invalid_command() {
   console.log('Unrecognized command.')
