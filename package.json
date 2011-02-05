@@ -16,7 +16,7 @@
     },
     "repository": {
         "type": "git",
-        "url" : "http://github.com/mcantelon/node-deja"
+        "url" : "http://github.com/mcantelon/node-deja.git"
     },
     "engines": {
       "node": ">= 0.3.0"
