@@ -11,13 +11,7 @@ var fs = require('fs')
   , argv = require('optimist').argv
   , iniparser = require('iniparser')
 
-var home = process.env.HOME
-
-// if HOME not set, die
-if (home === undefined) {
-  console.log('Error: HOME environmental variable not defined.')
-  process.exit(1)
-}
+var home = deja.getHomeEnvVarOrDie()
 
 iniparser.parse(home + '/.dejaconfig', function(err, data) {
 
