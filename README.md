@@ -100,6 +100,12 @@ $HOME/.dejaconfig. Then you'd be able to do quick writeable clones like this:
 
     deja clone dotfiles
 
+If you have files or file types that you'd like deja to not link to your home
+directory (such as README files and such), you can specify then in a
+.dejaignore file in your individual repos (or globally if you create
+a $HOME/.dejaignore ignore list). The ignore list uses the same scheme as a
+[.gitignore](http://help.github.com/git-ignore/) file.
+
 ## Installation
 
 The easiest way is via [npm](https://github.com/isaacs/npm):
