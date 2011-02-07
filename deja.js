@@ -103,7 +103,7 @@ iniparser.parse(home + '/.dejaconfig', function(err, data) {
 })
 
 function invalid_command() {
-  console.log('Unrecognized command.')
+  console.log('Unrecognized command or incorrect usage.')
 
   console.log(deja.usage())
   process.exit(1)
