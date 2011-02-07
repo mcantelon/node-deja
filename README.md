@@ -59,12 +59,7 @@ If there isn't a home directory entry linking the repo entry, "unlinked" will
 be added. If there is a home directory entry with the same name as a repo entry,
 "conflicts" will be added.
 
-## Other Stuff
-
-To see the differences between a repo and what currently exists in your
-home directory you'd enter something like this:
-
-    deja diff dotfiles
+## Linking and Diffing
 
 To remove links to your repo, for whatever reason, you'd enter:
 
@@ -73,6 +68,11 @@ To remove links to your repo, for whatever reason, you'd enter:
 To re-add links to your repo after removing them, you'd enter:
 
     deja link dotfiles
+
+To see the differences between a repo and what currently exists in your
+home directory you'd enter something like this:
+
+    deja diff dotfiles
 
 ## Subdirectories
 
@@ -102,9 +102,12 @@ $HOME/.dejaconfig. Then you'd be able to do quick writeable clones like this:
 
 If you have files or file types that you'd like deja to not link to your home
 directory (such as README files and such), you can specify then in a
-.dejaignore file in your individual repos (or globally if you create
+.dejaignore_local file in your individual repos (or globally if you create
 a $HOME/.dejaignore ignore list). The ignore list uses the same scheme as a
 [.gitignore](http://help.github.com/git-ignore/) file.
+
+Note that `.git`, `.gitmodules`, and `.dejaignore_local` are always ignored
+during linking and don't need to be added to an ignore file.
 
 ## Installation
 
