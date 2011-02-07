@@ -86,6 +86,11 @@ iniparser.parse(home + '/.dejaconfig', function(err, data) {
         deja.ls(home, dejaHome, false)
         break
 
+      // pull all repos and add new links
+      case 'update':
+        deja.update(home, dejaHome)
+        break
+
       // output help
       case 'help':
         console.log(deja.usage())
