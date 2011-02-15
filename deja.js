@@ -8,6 +8,9 @@
 
 var fs = require('fs')
   , deja = require('./lib/deja')
+  , mingy = require('mingy')
+  , Parser = mingy.Parser
+  , Command = mingy.Command
   , argv = require('optimist').argv
   , iniparser = require('iniparser')
 
@@ -24,92 +27,84 @@ iniparser.parse(home + '/.dejaconfig', function(err, data) {
     fs.mkdirSync(dejaHome, 0700)
   } catch(e) {}
 
-  // deal with command line input
-  if (argv['_'].length < 1 || argv['_'].length > 2) {
+  var parser = new Parser()
 
-    invalid_command() 
-  }
-  else if(argv['_'].length == 2) {
+  parser.addCommand('clone')
+  .set('syntax', ['clone <repo>'])
+  .set('logic', function(args) {
+    deja.cloneRepo(home, dejaHome, args['repo'], config)
+    return true
+  })
 
-    var command = argv['_'][0]
-    var param   = argv['_'][1]
+  parser.addCommand('pull')
+  .set('syntax', ['pull <repo>'])
+  .set('logic', function(args) {
+    deja.pullRepo(dejaHome, args['repo'])
+    return true
+  })
 
-    switch(command) {
+  parser.addCommand('diff')
+  .set('syntax', ['diff <repo>'])
+  .set('logic', function(args) {
+    deja.diffRepo(home, dejaHome, args['repo'])
+    return true
+  })
 
-      // clone a repo and create symlinks
-      case 'clone':
-        deja.cloneRepo(home, dejaHome, param, config)
-        break
+  parser.addCommand('rm')
+  .set('syntax', ['rm <repo>'])
+  .set('logic', function(args) {
+    deja.rmRepo(home, dejaHome, args['repo'])
+    return true
+  })
 
-      // update repo
-      case 'pull':
-        deja.pullRepo(dejaHome, param)
-        break
+  parser.addCommand('link')
+  .set('syntax', ['link <repo>'])
+  .set('logic', function(args) {
+    deja.linkRepo(home, dejaHome, args['repo'])
+    return true
+  })
 
-      // show differences between repo and home dir
-      case 'diff':
-        deja.diffRepo(home, dejaHome, param)
-        break
+  parser.addCommand('unlink')
+  .set('syntax', ['unlink <repo>'])
+  .set('logic', function(args) {
+    deja.unlinkRepo(home, dejaHome, args['repo'])
+    return true
+  })
 
-      // delete repo
-      case 'rm':
-        deja.rmRepo(home, dejaHome, param)
-        break
+  parser.addCommand('ls')
+  .set('syntax', ['ls', 'ls <repo>'])
+  .set('logic', function(args) {
+    var repoArg = (args['repo'])
+      ? args['repo']
+      : false
 
-      // add home dir symlinks to repo
-      case 'link':
-        deja.linkRepo(home, dejaHome, param)
-        break
+    deja.ls(home, dejaHome, repoArg)
+    return true
+  })
 
-      // remove home dir symlinks to repo
-      case 'unlink':
-        deja.unlinkRepo(home, dejaHome, param)
-        break
+  parser.addCommand('update')
+  .set('syntax', ['update'])
+  .set('logic', function(args) {
+    deja.updateRepos(home, dejaHome)
+    return true
+  })
 
-      // list repo contents
-      case 'ls':
-        deja.ls(home, dejaHome, param)
-        break
+  parser.addCommand('help')
+  .set('syntax', ['help'])
+  .set('logic', function(args) {
+    console.log(deja.usage())
+    return true
+  })
 
-      default:
-        invalid_command()
-    }
-  }
-  else {
+  parser.addCommand('version')
+  .set('syntax', ['version'])
+  .set('logic', function(args) {
+    console.log(deja.version())
+    return true
+  })
 
-    var command = argv['_'][0]
-
-    switch(command) {
-
-      // list repos
-      case 'ls':
-        deja.ls(home, dejaHome, false)
-        break
-
-      // pull all repos and add new links
-      case 'update':
-        deja.updateRepos(home, dejaHome)
-        break
-
-      // output help
-      case 'help':
-        console.log(deja.usage())
-        break
-
-      // output version
-      case 'version':
-        console.log(deja.version())
-        break
-
-      default:
-        invalid_command()
-    }
+  if (!parser.parseLexemes(argv['_'])) {
+    console.log('Unrecognized command.\n')
+    parser.parse('help')
   }
 })
-
-function invalid_command() {
-  console.log('Unrecognized command or incorrect usage.')
-
-  console.log(deja.usage())
-  process.exit(1)
-}
