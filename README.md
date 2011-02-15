@@ -117,9 +117,10 @@ The easiest way is via [npm](https://github.com/isaacs/npm):
 
 ## Dependencies
 
-deja requires the [wrench.js](https://github.com/ryanmcgrath/wrench-js) and
-[optimist](https://github.com/substack/node-optimist) node.js modules (both
-are available via npm as "wrench" and "optimist" respectively).
+deja requires the [wrench.js](https://github.com/ryanmcgrath/wrench-js),
+[optimist](https://github.com/substack/node-optimist), and
+[mingy](https://github.com/mcantelon/node-mingy) node.js modules
+(available via npm as "wrench", "optimist", and "mingy" respectively).
 
 deja, of course, requires [git](http://git-scm.com/) to be installed.
 
