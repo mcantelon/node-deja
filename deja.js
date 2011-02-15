@@ -27,81 +27,90 @@ iniparser.parse(home + '/.dejaconfig', function(err, data) {
     fs.mkdirSync(dejaHome, 0700)
   } catch(e) {}
 
-  var parser = new Parser()
+  var commands = {
+    'ls': {
+      'syntax': ['ls', 'ls <repo>'],
+      'logic': function(args) {
+        var repoArg = (args['repo'])
+          ? args['repo']
+          : false
 
-  parser.addCommand('clone')
-  .set('syntax', ['clone <repo>'])
-  .set('logic', function(args) {
-    deja.cloneRepo(home, dejaHome, args['repo'], config)
-    return true
-  })
+        deja.ls(home, dejaHome, repoArg)
+        return true
+      }
+    },
+    'clone': {
+      'syntax': ['clone <repo>'],
+      'logic': function(args) {
+        deja.cloneRepo(home, dejaHome, args['repo'], config)
+        return true
+      }
+    },
+    'pull' : {
+      'syntax': ['pull <repo>'],
+      'logic': function(args) {
+        deja.pullRepo(dejaHome, args['repo'])
+        return true
+      }
+    },
+    'diff': {
+      'syntax': ['diff <repo>'],
+      'logic': function(args) {
+        deja.diffRepo(home, dejaHome, args['repo'])
+        return true
+      }
+    },
+    'rm': {
+      'syntax': ['rm <repo>'],
+      'logic': function(args) {
+        deja.rmRepo(home, dejaHome, args['repo'])
+        return true
+      }
+    },
+    'link': {
+      'syntax': ['link <repo>'],
+      'logic': function(args) {
+        deja.linkRepo(home, dejaHome, args['repo'])
+        return true
+      }
+    },
+    'unlink': {
+      'syntax': ['unlink <repo>'],
+      'logic': function(args) {
+        deja.unlinkRepo(home, dejaHome, args['repo'])
+        return true
+      }
+    },
+    'help': {
+      'syntax': ['help'],
+      'logic': function(args) {
+        console.log(deja.usage())
+        return true
+      }
+    },
+    'update': {
+      'syntax': ['update'],
+      'logic': function(args) {
+        deja.updateRepos(home, dejaHome)
+        return true
+      }
+    },
+    'version': {
+      'syntax': ['version'],
+      'logic': function(args) {
+        console.log(deja.version())
+        return true
+      }
+    }
+  }
 
-  parser.addCommand('pull')
-  .set('syntax', ['pull <repo>'])
-  .set('logic', function(args) {
-    deja.pullRepo(dejaHome, args['repo'])
-    return true
-  })
+  parser = new Parser()
 
-  parser.addCommand('diff')
-  .set('syntax', ['diff <repo>'])
-  .set('logic', function(args) {
-    deja.diffRepo(home, dejaHome, args['repo'])
-    return true
-  })
-
-  parser.addCommand('rm')
-  .set('syntax', ['rm <repo>'])
-  .set('logic', function(args) {
-    deja.rmRepo(home, dejaHome, args['repo'])
-    return true
-  })
-
-  parser.addCommand('link')
-  .set('syntax', ['link <repo>'])
-  .set('logic', function(args) {
-    deja.linkRepo(home, dejaHome, args['repo'])
-    return true
-  })
-
-  parser.addCommand('unlink')
-  .set('syntax', ['unlink <repo>'])
-  .set('logic', function(args) {
-    deja.unlinkRepo(home, dejaHome, args['repo'])
-    return true
-  })
-
-  parser.addCommand('ls')
-  .set('syntax', ['ls', 'ls <repo>'])
-  .set('logic', function(args) {
-    var repoArg = (args['repo'])
-      ? args['repo']
-      : false
-
-    deja.ls(home, dejaHome, repoArg)
-    return true
-  })
-
-  parser.addCommand('update')
-  .set('syntax', ['update'])
-  .set('logic', function(args) {
-    deja.updateRepos(home, dejaHome)
-    return true
-  })
-
-  parser.addCommand('help')
-  .set('syntax', ['help'])
-  .set('logic', function(args) {
-    console.log(deja.usage())
-    return true
-  })
-
-  parser.addCommand('version')
-  .set('syntax', ['version'])
-  .set('logic', function(args) {
-    console.log(deja.version())
-    return true
-  })
+  for (var name in commands) {
+    parser.addCommand(name)
+    .set('syntax', commands[name].syntax)
+    .set('logic', commands[name].logic)
+  }
 
   if (!parser.parseLexemes(argv['_'])) {
     console.log('Unrecognized command.\n')
