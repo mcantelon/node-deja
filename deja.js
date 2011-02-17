@@ -104,13 +104,7 @@ iniparser.parse(home + '/.dejaconfig', function(err, data) {
     }
   }
 
-  parser = new Parser()
-
-  for (var name in commands) {
-    parser.addCommand(name)
-    .set('syntax', commands[name].syntax)
-    .set('logic', commands[name].logic)
-  }
+  parser = new Parser(commands)
 
   if (!parser.parseLexemes(argv['_'])) {
     console.log('Unrecognized command.\n')
