@@ -95,10 +95,14 @@ If you did this and changed your mind you could remove the symlinks by entering:
 
 ## Configuration
 
-If you're ultra-lazy, you can set `github_username` in an .ini file at
-$HOME/.dejaconfig. Then you'd be able to do quick writeable clones like this:
+If you're ultra-lazy, you can set your GitHub username in $HOME/.gitconfig.
+You'll then be able to do quick writeable clones like this:
 
     deja clone dotfiles
+
+Set your GitHub username is $HOME/.gitconfig using the following command:
+
+    git config --global github.user YOUR_USERNAME
 
 If you have files or file types that you'd like deja to not link to your home
 directory (such as README files and such), you can specify then in a
