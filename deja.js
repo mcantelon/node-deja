@@ -102,6 +102,14 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
         }
       },
 
+      'edit': {
+        'syntax': ['edit <repoFilePath>'],
+        'logic': function(args) {
+          deja.editRepoFile(home, dejaHome, args['repoFilePath'])
+          return true
+        }
+      },
+
       'version': {
         'syntax': ['version'],
         'logic': function(args) {
