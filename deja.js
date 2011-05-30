@@ -105,7 +105,15 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
       'edit': {
         'syntax': ['edit <repoFilePath>'],
         'logic': function(args) {
-          deja.editRepoFile(home, dejaHome, args['repoFilePath'])
+          deja.editRepoFile(dejaHome, args['repoFilePath'])
+          return true
+        }
+      },
+
+      'cheat': {
+        'syntax': ['cheat <name>'],
+        'logic': function(args) {
+          deja.editCheat(dejaHome, args['name'])
           return true
         }
       },
