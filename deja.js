@@ -110,6 +110,14 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
         }
       },
 
+      'explore': {
+        'syntax': ['explore <repo>'],
+        'logic': function(args) {
+          deja.exploreRepo(dejaHome, args['repo'])
+          return true
+        }
+      },
+
       'cheat': {
         'syntax': ['cheat <name>'],
         'logic': function(args) {
