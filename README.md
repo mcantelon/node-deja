@@ -93,6 +93,24 @@ If you did this and changed your mind you could remove the symlinks by entering:
 
     deja unlink dotfiles/bin
 
+## Editing Deja Repository Files
+
+You can edit a file in a Deja repository by entering something like:
+
+    deja edit dotfiles/.bashrc
+
+This will open your file using whatever editor is specified by the
+environmental variable `EDITOR`. If this isn't defined, `vi` will be used.
+
+## Cheatsheets
+
+You can edit cheatsheets, after letting Deja know where you want them stored
+(see the following *Configuration* section), by entering something like:
+
+    deja cheat git
+
+This will open a file called "git.txt" in your cheats directory.
+
 ## Configuration
 
 If you're ultra-lazy, you can set your GitHub username in $HOME/.gitconfig.
@@ -112,6 +130,11 @@ a $HOME/.dejaignore ignore list). The ignore list uses the same scheme as a
 
 Note that `.git`, `.gitmodules`, and `.dejaignore_local` are always ignored
 during linking and don't need to be added to an ignore file.
+
+If you're using Deja's `cheat` command, you can configure your cheats directory
+using a command like the following:
+
+    git config --global deja.cheatpath dotfiles/cheats
 
 ## Installation
 
