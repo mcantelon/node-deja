@@ -97,7 +97,7 @@ If you did this and changed your mind you could remove the symlinks by entering:
 
     deja unlink dotfiles/bin
 
-## Editing Deja Repository Files
+## Editing Files
 
 You can edit a file in a Deja repository by entering something like:
 
@@ -114,6 +114,8 @@ You can edit cheatsheets, after letting Deja know where you want them stored
     deja cheat git
 
 This will open a file called "git.txt" in your cheats directory.
+
+A sensible thing to do is aliasing `cheat` to `deja cheat` to save keystrokes.
 
 ## Configuration
 
