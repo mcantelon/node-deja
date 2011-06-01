@@ -111,7 +111,7 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
       },
 
       'explore': {
-        'syntax': ['explore <repo>'],
+        'syntax': ['explore <repo>', 'go <repo>'],
         'logic': function(args) {
           deja.exploreRepo(dejaHome, args['repo'])
           return true
