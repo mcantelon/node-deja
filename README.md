@@ -41,9 +41,12 @@ To update this repo you'd enter:
 
     deja pull dotfiles
 
-To spawn a new shell inside the repo (to do a `git push`, for example) you'd enter:
+To spawn a new shell inside the repo (to do a `git push`, for example) you'd
+enter:
 
     deja explore dotfiles
+
+NOTE: you can use `go` instead of `explore`.
 
 To remove this repo (and any home directory symlinks) you'd enter:
 
