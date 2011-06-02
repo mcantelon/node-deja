@@ -1,8 +1,8 @@
-var assert = require('assert'),
-    should = require('should'),
-    spawn = require('child_process').spawn,
-    fs = require('fs'),
-    path = require('path')
+var assert = require('assert')
+  , should = require('should')
+  , spawn = require('child_process').spawn
+  , fs = require('fs')
+  , path = require('path')
 
 TESTING_DIR = '/tmp/dejaTest'
 
