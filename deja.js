@@ -137,6 +137,9 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
 
     parser = new Parser(commands)
 
+    // allow -v or --version shortcut for viewing version
+    argv['_'] = (argv['v'] || argv['version']) ? ['version'] : argv['_']
+
     if (!parser.parseLexemes(argv['_'])) {
       console.log('Unrecognized command.\n')
       parser.parse('help')
