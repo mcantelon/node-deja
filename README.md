@@ -107,7 +107,7 @@ You can edit a file in a Deja repository by entering something like:
     deja edit dotfiles/.bashrc
 
 This will open your file using whatever editor is specified by the
-environmental variable `EDITOR`. If this isn't defined, `vi` will be used.
+environmental variable `EDITOR`. If this isn't defined, `vim` will be used.
 
 ## Cheatsheets
 
