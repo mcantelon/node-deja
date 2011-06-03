@@ -7,6 +7,7 @@
 */
 
 var fs = require('fs')
+  , helpers = require('./lib/helpers')
   , deja = require('./lib/deja')
   , mingy = require('mingy')
   , Parser = mingy.Parser
@@ -14,7 +15,7 @@ var fs = require('fs')
   , argv = require('optimist').argv
   , iniparser = require('iniparser')
 
-var home = deja.getHomeEnvVarOrDie()
+var home = helpers.getHomeEnvVarOrDie()
 
 iniparser.parse(home + '/.gitconfig', function(err, data) {
 
@@ -22,7 +23,7 @@ iniparser.parse(home + '/.gitconfig', function(err, data) {
 
   var dejaHome = home + '/.deja'
 
-  deja.whenDirectoryExists(dejaHome, function() {
+  helpers.whenDirectoryExists(dejaHome, function() {
 
     var commands = {
 
