@@ -1,0 +1,16 @@
+Usage: deja <COMMAND> [OPTIONS]
+
+Commands:
+
+  clone <GIT REPO URL>
+  ls [REPO NAME][/SUBDIRECTORY]
+  pull <REPO NAME>
+  rm <REPO NAME>
+  diff <REPO NAME>
+  link <REPO NAME>[/SUBDIRECTORY]
+  unlink <REPO NAME>[/SUBDIRECTORY]
+  explore <REPO NAME>[/SUBDIRECTORY]
+  edit <REPO NAME></PATH/TO/FILE>
+  cheat <CHEAT NAME>
+  update
+  version
