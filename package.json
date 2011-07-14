@@ -1,6 +1,6 @@
 {
     "name": "deja",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "CLI utility for managing git versioning of dotfiles, cheetsheets, etc.",
     "tags" : ["cli", "git", "dotfiles"],
     "author" : "Mike Cantelon <mcantelon@gmail.com>",
