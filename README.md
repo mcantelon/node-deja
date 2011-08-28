@@ -123,7 +123,7 @@ A sensible thing to do is aliasing `cheat` to `deja cheat` to save keystrokes.
 ## Configuration
 
 If you're ultra-lazy, you can set your GitHub username in $HOME/.gitconfig.
-You'll then be able to do quick writeable clones like this:
+You'll then be able to do quick writable  clones like this:
 
     deja clone dotfiles
 
