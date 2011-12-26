@@ -23,7 +23,7 @@
       "node": ">= 0.3.0"
     },
     "bugs" : {
-        "web" : "http://github.com/mcantelon/node-deja/issues"
+        "url" : "http://github.com/mcantelon/node-deja/issues"
     },
     "bin" : {
       "deja" : "./deja.js"
