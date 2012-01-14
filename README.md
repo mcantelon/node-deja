@@ -162,11 +162,12 @@ deja, of course, requires [git](http://git-scm.com/) to be installed.
 
 ## Testing
 
-Testing requires the [expresso](ihttps://github.com/visionmedia/expresso)
+Testing requires the [Mocha](http://visionmedia.github.com/mocha/)
 and [should.js](https://github.com/visionmedia/should.js) modules (available
-via rpm as "expresso" and "should" respectively).
+via rpm as "mocha" and "should" respectively).
 
 Run the tests by entering:
 
-    expresso
+    mocha -t 10000
 
+The large timeout value required is due to calls, during testing, to GitHub.
