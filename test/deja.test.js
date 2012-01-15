@@ -4,8 +4,6 @@ var assert = require('assert')
   , fs = require('fs')
   , path = require('path')
 
-console.log('NOTE: Tests should be run using: mocha -t 10000')
-
 var testingDir = '/tmp/dejaTest'
 
 function testingSetup(testingDir, callback) {
@@ -138,6 +136,7 @@ function testCloneThenTeardown(testingDir, repoBaseName, repoUrl) {
 
 describe('deja', function() {
   beforeEach(function(done) {
+    this.timeout(0); // disble Mocha's default timeout
     testingSetup(testingDir, done)
   })
 

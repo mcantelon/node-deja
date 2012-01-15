@@ -168,6 +168,6 @@ via rpm as "mocha" and "should" respectively).
 
 Run the tests by entering:
 
-    mocha -t 10000
+    mocha
 
 The large timeout value required is due to calls, during testing, to GitHub.
