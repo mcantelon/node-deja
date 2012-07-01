@@ -9,7 +9,7 @@ var testingDir = '/tmp/dejaTest'
 function testingSetup(testingDir, callback) {
 
   // if temp dir exists, delete contents
-  path.exists(testingDir, function(exists) {
+  fs.exists(testingDir, function(exists) {
 
     // if the testing directory is already here, remove it
     if (exists) {
@@ -33,7 +33,7 @@ function makeTestDirectory(testingDir, callback) {
   fs.mkdirSync(testingDir, 0777)
 
   // if testing directory doesn't now exit, abort testing
-  path.exists(testingDir, function(exists) {
+  fs.exists(testingDir, function(exists) {
 
     if (!exists) {
       console.log('Error: could not create testing directory.')
@@ -47,7 +47,7 @@ function makeTestDirectory(testingDir, callback) {
 
 function testing_teardown(testingDir, callback) {
 
-  path.exists(testingDir, function(exists) {
+  fs.exists(testingDir, function(exists) {
 
     // if the testing directory is already here, remove it
     if (exists) {
@@ -78,7 +78,7 @@ function doClone(testingDir, repoBaseName, repoUrl, exists_callback) {
   var dejaArgs = ['clone', repoUrl]
   var deja = spawnInTestHome('deja', dejaArgs, testingDir)
   deja.on('exit', function(code) {
-    path.exists(testingDir + '/.deja/' + repoBaseName + '/.git', exists_callback)
+    fs.exists(testingDir + '/.deja/' + repoBaseName + '/.git', exists_callback)
   })
 }
 
@@ -89,7 +89,7 @@ function doMockClone(testingDir, repoBaseName, exists_callback) {
   // make deja directory
   fs.mkdirSync(pathToDeja, 0777)
 
-  path.exists(pathToDeja, function(exists) {
+  fs.exists(pathToDeja, function(exists) {
     exists.should.equal(true)
 
     var pathToMockRepo = pathToDeja + '/' + repoBaseName
@@ -97,7 +97,7 @@ function doMockClone(testingDir, repoBaseName, exists_callback) {
     // make mock repo directory
     fs.mkdirSync(pathToMockRepo, 0777)
 
-    path.exists(pathToMockRepo, function(exists) {
+    fs.exists(pathToMockRepo, function(exists) {
       exists.should.equal(true)
 
       var pathToMockGitDir = pathToMockRepo + '/.git'
@@ -105,14 +105,14 @@ function doMockClone(testingDir, repoBaseName, exists_callback) {
       // stick fake .git dir in fake repo
       fs.mkdirSync(pathToMockGitDir, 0777)
 
-      path.exists(pathToMockGitDir, function(exists) {
+      fs.exists(pathToMockGitDir, function(exists) {
         exists.should.equal(true)
 
         var pathToFakeVimrc = pathToMockRepo + '/.vimrc'
         var touch = spawn('touch', [pathToFakeVimrc])
 
         touch.on('exit', function(code) {
-          path.exists(pathToFakeVimrc, exists_callback)
+          fs.exists(pathToFakeVimrc, exists_callback)
         })
       })
     })
@@ -149,7 +149,7 @@ describe('deja', function() {
     deja.on('exit', function(code) {
       code.should.equal(0)
       if (code == 0) {
-        path.exists(testingDir + '/.deja', function(exists) {
+        fs.exists(testingDir + '/.deja', function(exists) {
           exists.should.equal(true)
           done()
         })
@@ -175,7 +175,7 @@ describe('deja', function() {
       if (exists) {
         var deja = spawnInTestHome('deja', ['rm', 'dotfiles'], testingDir)
         deja.on('exit', function(code) {
-          path.exists(testingDir + '/.deja/dotfiles', function(exists) {
+          fs.exists(testingDir + '/.deja/dotfiles', function(exists) {
             // the repo should have been deleted by "deja rm dotfiles"
             exists.should.equal(false)
             done()
@@ -249,7 +249,7 @@ describe('deja', function() {
         var deja = spawnInTestHome('deja', dejaArgs, testingDir)
         deja.on('exit', function(code) {
           // deja should have padding the repo name as it's a duplicate
-          path.exists(testingDir + '/.deja/dotfiles_1/.git', function(exists) {
+          fs.exists(testingDir + '/.deja/dotfiles_1/.git', function(exists) {
             exists.should.equal(true)
             done()
          })
