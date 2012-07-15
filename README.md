@@ -137,7 +137,7 @@ directory (such as README files and such), you can specify then in a
 a $HOME/.dejaignore ignore list). The ignore list uses the same scheme as a
 [.gitignore](http://help.github.com/git-ignore/) file.
 
-Note that `.git`, `.gitmodules`, and `.dejaignore_local` are always ignored
+Note that `.git`, `.gitmodules`, and `.dejaignore` are always ignored
 during linking and don't need to be added to an ignore file.
 
 If you're using Deja's `cheat` command, you can configure your cheats directory
