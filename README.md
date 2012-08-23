@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/mcantelon/node-deja.png)](http://travis-ci.org/mcantelon/node-deja)
            _            _                _        _          
           /\ \         /\ \             /\ \     / /\        
          /  \ \____   /  \ \            \ \ \   / /  \       
