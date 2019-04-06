@@ -162,7 +162,7 @@ deja, of course, requires [git](http://git-scm.com/) to be installed.
 
 ## Testing
 
-Testing requires the [Mocha](http://visionmedia.github.com/mocha/)
+Testing requires the [Mocha](http://mochajs.org/)
 and [should.js](https://github.com/visionmedia/should.js) modules (available
 via rpm as "mocha" and "should" respectively).
 
